@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class RegisterViewController : UIViewController {
   
@@ -179,6 +180,15 @@ class RegisterViewController : UIViewController {
     }
     
     // Todo : Firebase Register
+    FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+      guard let result = authResult, error == nil else {
+        print("Error creating user : \(error?.localizedDescription)")
+        return
+      }
+      
+      let user = result.user
+      print("Created user : \(user)")
+    }
   }
   
   @objc private func didTapChangeProfilePic() {
