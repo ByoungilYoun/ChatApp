@@ -21,7 +21,7 @@ class RegisterViewController : UIViewController {
   
   private let imageView : UIImageView = {
     let imageView = UIImageView()
-    imageView.image = UIImage(systemName: "person")
+    imageView.image = UIImage(systemName: "person.circle")
     imageView.tintColor = .gray
     imageView.contentMode = .scaleAspectFit
     imageView.isUserInteractionEnabled = true
@@ -180,7 +180,8 @@ class RegisterViewController : UIViewController {
     }
     
     // Todo : Firebase Register
-    FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+    FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
+      guard let self = self else { return }
       guard let result = authResult, error == nil else {
         print("Error creating user : \(error?.localizedDescription)")
         return
@@ -188,6 +189,8 @@ class RegisterViewController : UIViewController {
       
       let user = result.user
       print("Created user : \(user)")
+      
+      self.navigationController?.dismiss(animated: true, completion: nil)
     }
   }
   
